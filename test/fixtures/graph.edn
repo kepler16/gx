@@ -1,9 +1,0 @@
-{:a {:nested-a 1}
- :z (get (gx/ref :a) :nested-a)
- :y (println "starting")
- :b {:gx/start (+ (gx/ref :z) 2)
-     :gx/stop (println "stopping")}
-;;  :t {:foo k16.gx.beta.core-test/my-props-fn}
- :c {:gx/component k16.gx.beta.core-test/test-component}
- :x {:gx/component k16.gx.beta.core-test/test-component-2}
- }

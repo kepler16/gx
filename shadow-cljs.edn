@@ -1,9 +1,0 @@
-{:deps {:aliases [:dev]}
- :builds
- {:lib {:target :npm-module
-        :output-dir "out/lib.js"
-        :devtools {:repl-pprint true}}
-  :test {:target    :node-test
-         :output-to "out/gx-test.js"
-         :ns-regexp "-test$"
-         :autorun   true}}}

@@ -1,54 +1,37 @@
-name: Run tests
-on:
-  push:
-    branches-ignore:
-      - master
+name: Test
+on: [push]
 
 jobs:
-  build-and-test:
+  test:
     runs-on: ubuntu-latest
-
-    env:
-      GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
 
     steps:
       - name: Checkout git repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
-      - name: Setup Node
-        uses: actions/setup-node@v2
+      - name: Setup Java
+        uses: actions/setup-java@v4
         with:
-          node-version: '16'
+          distribution: temurin
+          java-version: 21
+          cache: 'maven'
+          cache-dependency-path: '**/deps.edn'
 
-      - name: Cache dependencies
-        uses: actions/cache@v2
-        with:
-          path: ~/.npm
-          key: npm-${{ hashFiles('package-lock.json') }}
-          restore-keys: npm-
-
-      - uses: actions/setup-java@v2
-        with:
-          distribution: 'temurin'
-          java-version: '17'
-
-
-      - uses: s4u/maven-settings-action@v2.4.1
-        with:
-          servers: |
-            [{"id": "github-kepler",
-              "username": "GITHUB",
-              "password": "${{secrets.GITHUB_TOKEN}}"}]
-
-      - uses: DeLaGuardo/setup-clojure@3.7
+      - uses: extractions/setup-just@v2
+      - uses: DeLaGuardo/setup-clojure@12.5
         with:
           cli: latest
 
-      - name: Install dependencies
-        run: npm ci --ignore-scripts
+      - name: Setup Git
+        run: |
+          git config --global user.email "ci@kepler16.com"
+          git config --global user.name "Kmono CI"
 
-      - name: Test clojure
-        run: clojure -X:test
+      - name: Setup Kmono
+        uses: kepler16/setup-kmono@v1
+        with:
+          version: 4.7.2
 
-      - name: Test cljs
-        run: clojure -M:dev:shadow-cljs release test
+      - name: Test
+        run: |
+          just run test --run-in-order false -M :test

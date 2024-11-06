@@ -1,5 +1,0 @@
-{:a {:name "John"
-     :last-name "Doe"}
- :comp
- {:gx/component k16.gx.beta.core-test/my-new-component
-  :gx/start {:gx/props-fn k16.gx.beta.core-test/my-props-fn}}}

@@ -1,2 +1,0 @@
-{:lint-as
- {juxt.clip.core/with-system clojure.core/with-open}}

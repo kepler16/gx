@@ -1,0 +1,14 @@
+{:raw-value {:a 1}
+
+ :ref (gx/ref :raw-value)
+
+ :ref-in (gx/ref [:raw-value :a])
+
+ :with-refs (gx/with-refs [a (gx/ref :ref)]
+              (merge a {:b 2}))
+
+ :component (gx/component
+             {:config (gx/ref :with-refs)}
+             {:signals
+              {:start (fn [_ {:keys [config]}]
+                        {:input-props config})}})}
